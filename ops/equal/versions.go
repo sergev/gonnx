@@ -1,7 +1,7 @@
 package equal
 
 import (
-	"github.com/advancedclimatesystems/gonnx/ops"
+	"github.com/sergev/gonnx/ops"
 )
 
 var equalVersions = ops.OperatorVersions{

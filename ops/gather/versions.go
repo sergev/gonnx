@@ -1,6 +1,6 @@
 package gather
 
-import "github.com/advancedclimatesystems/gonnx/ops"
+import "github.com/sergev/gonnx/ops"
 
 var gatherVersions = ops.OperatorVersions{
 	1:  ops.NewOperatorConstructor(newGather, 1, gatherTypeConstraints),

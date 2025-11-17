@@ -1,6 +1,6 @@
 package reducemin
 
-import "github.com/advancedclimatesystems/gonnx/ops"
+import "github.com/sergev/gonnx/ops"
 
 var reduceMinVersions = ops.OperatorVersions{
 	1:  ops.NewOperatorConstructor(newReduceMin, 1, reduceMin11TypeConstraints),

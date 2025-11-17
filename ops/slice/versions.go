@@ -1,6 +1,6 @@
 package slice
 
-import "github.com/advancedclimatesystems/gonnx/ops"
+import "github.com/sergev/gonnx/ops"
 
 var sliceVersions = ops.OperatorVersions{
 	1:  newSlice1,

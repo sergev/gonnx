@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/advancedclimatesystems/gonnx/onnx"
+	"github.com/sergev/gonnx/onnx"
 )
 
 var errModel = errors.New("gonnx model error")

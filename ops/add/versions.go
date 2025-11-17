@@ -1,7 +1,7 @@
 package add
 
 import (
-	"github.com/advancedclimatesystems/gonnx/ops"
+	"github.com/sergev/gonnx/ops"
 )
 
 var addVersions = ops.OperatorVersions{

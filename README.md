@@ -20,7 +20,7 @@ First, [install Go on your machine](https://golang.org/doc/install).
 Then, clone the repository:
 
 ```sh
-git clone https://github.com/AdvancedClimateSystems/gonnx.git
+git clone https://github.com/sergev/gonnx.git
 cd gonnx
 ```
 
@@ -37,7 +37,7 @@ A simple example is shown below:
 package main
 
 import (
-    "github.com/advancedclimatesystems/gonnx"
+    "github.com/sergev/gonnx"
     "gorgonia.org/tensor"
 )
 
@@ -95,7 +95,7 @@ Our workflow is based on the [github-flow](https://guides.github.com/introductio
 2. Fork the project.
 3. Clone your fork and add the upstream.
     ```bash
-    git remote add upstream https://github.com/AdvancedClimateSystems/gonnx.git
+    git remote add upstream https://github.com/sergev/gonnx.git
     ```
 
 4. Pull new changes from the upstream.

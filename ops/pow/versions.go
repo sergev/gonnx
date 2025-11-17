@@ -1,7 +1,7 @@
 package pow
 
 import (
-	"github.com/advancedclimatesystems/gonnx/ops"
+	"github.com/sergev/gonnx/ops"
 )
 
 var powVersions = ops.OperatorVersions{

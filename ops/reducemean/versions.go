@@ -1,6 +1,6 @@
 package reducemean
 
-import "github.com/advancedclimatesystems/gonnx/ops"
+import "github.com/sergev/gonnx/ops"
 
 var reduceMeanVersions = ops.OperatorVersions{
 	1:  ops.NewOperatorConstructor(newReduceMean, 1, reduceMeanTypeConstraints),

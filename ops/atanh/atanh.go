@@ -3,8 +3,8 @@ package atanh
 import (
 	"math"
 
-	"github.com/advancedclimatesystems/gonnx/onnx"
-	"github.com/advancedclimatesystems/gonnx/ops"
+	"github.com/sergev/gonnx/onnx"
+	"github.com/sergev/gonnx/ops"
 	"gorgonia.org/tensor"
 )
 

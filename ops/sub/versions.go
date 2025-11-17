@@ -1,6 +1,6 @@
 package sub
 
-import "github.com/advancedclimatesystems/gonnx/ops"
+import "github.com/sergev/gonnx/ops"
 
 var subVersions = ops.OperatorVersions{
 	7:  ops.NewOperatorConstructor(newSub, 7, subTypeConstraints),

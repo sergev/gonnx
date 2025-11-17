@@ -1,7 +1,7 @@
 package cosh
 
 import (
-	"github.com/advancedclimatesystems/gonnx/ops"
+	"github.com/sergev/gonnx/ops"
 )
 
 var coshVersions = ops.OperatorVersions{

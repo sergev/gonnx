@@ -1,6 +1,6 @@
 package squeeze
 
-import "github.com/advancedclimatesystems/gonnx/ops"
+import "github.com/sergev/gonnx/ops"
 
 var squeezeVersions = ops.OperatorVersions{
 	1:  newSqueeze1,

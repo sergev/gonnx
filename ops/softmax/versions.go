@@ -1,6 +1,6 @@
 package softmax
 
-import "github.com/advancedclimatesystems/gonnx/ops"
+import "github.com/sergev/gonnx/ops"
 
 var softmaxVersions = ops.OperatorVersions{
 	1:  ops.NewOperatorConstructor(newSoftmax, 1, softmaxTypeConstraints),

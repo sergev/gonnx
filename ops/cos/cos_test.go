@@ -3,7 +3,7 @@ package cos
 import (
 	"testing"
 
-	"github.com/advancedclimatesystems/gonnx/ops"
+	"github.com/sergev/gonnx/ops"
 	"github.com/stretchr/testify/assert"
 	"gorgonia.org/tensor"
 )

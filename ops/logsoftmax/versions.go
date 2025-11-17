@@ -1,6 +1,6 @@
 package logsoftmax
 
-import "github.com/advancedclimatesystems/gonnx/ops"
+import "github.com/sergev/gonnx/ops"
 
 var logSoftmaxVersions = ops.OperatorVersions{
 	1:  ops.NewOperatorConstructor(newLogSoftmax, 1, logSoftmaxTypeConstraints),

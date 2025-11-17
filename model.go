@@ -5,8 +5,8 @@ import (
 	"io"
 	"os"
 
-	"github.com/advancedclimatesystems/gonnx/onnx"
-	"github.com/advancedclimatesystems/gonnx/ops"
+	"github.com/sergev/gonnx/onnx"
+	"github.com/sergev/gonnx/ops"
 	"google.golang.org/protobuf/proto"
 	"gorgonia.org/tensor"
 )

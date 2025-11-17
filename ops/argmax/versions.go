@@ -1,7 +1,7 @@
 package argmax
 
 import (
-	"github.com/advancedclimatesystems/gonnx/ops"
+	"github.com/sergev/gonnx/ops"
 )
 
 var argMaxVersions = ops.OperatorVersions{

@@ -1,6 +1,6 @@
 package matmul
 
-import "github.com/advancedclimatesystems/gonnx/ops"
+import "github.com/sergev/gonnx/ops"
 
 var matMulVersions = ops.OperatorVersions{
 	1:  ops.NewOperatorConstructor(newMatMul, 1, matmul1TypeConstraints),

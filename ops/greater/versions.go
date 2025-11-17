@@ -1,6 +1,6 @@
 package greater
 
-import "github.com/advancedclimatesystems/gonnx/ops"
+import "github.com/sergev/gonnx/ops"
 
 var greaterVersions = ops.OperatorVersions{
 	7:  ops.NewOperatorConstructor(newGreater, 7, greater7TypeConstraints),

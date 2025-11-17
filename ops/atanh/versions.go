@@ -1,7 +1,7 @@
 package atanh
 
 import (
-	"github.com/advancedclimatesystems/gonnx/ops"
+	"github.com/sergev/gonnx/ops"
 )
 
 var atanhVersions = ops.OperatorVersions{

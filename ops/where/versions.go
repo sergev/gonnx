@@ -1,6 +1,6 @@
 package where
 
-import "github.com/advancedclimatesystems/gonnx/ops"
+import "github.com/sergev/gonnx/ops"
 
 var whereVersions = ops.OperatorVersions{
 	9: ops.NewOperatorConstructor(newWhere, 9, whereTypeConstraints),

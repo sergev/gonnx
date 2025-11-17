@@ -1,7 +1,7 @@
 package identity
 
 import (
-	"github.com/advancedclimatesystems/gonnx/ops"
+	"github.com/sergev/gonnx/ops"
 )
 
 var identityVersions = ops.OperatorVersions{

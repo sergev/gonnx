@@ -3,9 +3,9 @@ package gather
 import (
 	"testing"
 
-	"github.com/advancedclimatesystems/gonnx/onnx"
-	"github.com/advancedclimatesystems/gonnx/ops"
-	"github.com/advancedclimatesystems/gonnx/ops/concat"
+	"github.com/sergev/gonnx/onnx"
+	"github.com/sergev/gonnx/ops"
+	"github.com/sergev/gonnx/ops/concat"
 	"github.com/stretchr/testify/assert"
 	"gorgonia.org/tensor"
 )

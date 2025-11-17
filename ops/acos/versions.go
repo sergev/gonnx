@@ -1,7 +1,7 @@
 package acos
 
 import (
-	"github.com/advancedclimatesystems/gonnx/ops"
+	"github.com/sergev/gonnx/ops"
 )
 
 var acosVersions = ops.OperatorVersions{

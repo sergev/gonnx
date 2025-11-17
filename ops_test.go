@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/advancedclimatesystems/gonnx/onnx"
+	"github.com/sergev/gonnx/onnx"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/protobuf/proto"
 	"gorgonia.org/tensor"

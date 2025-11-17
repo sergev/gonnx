@@ -1,6 +1,6 @@
 package unsqueeze
 
-import "github.com/advancedclimatesystems/gonnx/ops"
+import "github.com/sergev/gonnx/ops"
 
 var unsqueezeVersions = ops.OperatorVersions{
 	1:  newUnsqueeze1,

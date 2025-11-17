@@ -1,6 +1,6 @@
 package less
 
-import "github.com/advancedclimatesystems/gonnx/ops"
+import "github.com/sergev/gonnx/ops"
 
 var lessVersions = ops.OperatorVersions{
 	7:  ops.NewOperatorConstructor(newLess, 7, less7TypeConstraints),

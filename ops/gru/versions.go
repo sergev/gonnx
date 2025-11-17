@@ -1,6 +1,6 @@
 package gru
 
-import "github.com/advancedclimatesystems/gonnx/ops"
+import "github.com/sergev/gonnx/ops"
 
 var gruVersions = ops.OperatorVersions{
 	7: ops.NewOperatorConstructor(newGRU, 7, gruTypeConstraints),

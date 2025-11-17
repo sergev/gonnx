@@ -1,6 +1,6 @@
 package or
 
-import "github.com/advancedclimatesystems/gonnx/ops"
+import "github.com/sergev/gonnx/ops"
 
 var orVersions = ops.OperatorVersions{
 	7: ops.NewOperatorConstructor(newOr, 7, orTypeConstraints),

@@ -1,6 +1,6 @@
 package sigmoid
 
-import "github.com/advancedclimatesystems/gonnx/ops"
+import "github.com/sergev/gonnx/ops"
 
 var sigmoidVersions = ops.OperatorVersions{
 	6:  ops.NewOperatorConstructor(newSigmoid, 6, sigmoidTypeConstraints),

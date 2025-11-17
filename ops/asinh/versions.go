@@ -1,7 +1,7 @@
 package asinh
 
 import (
-	"github.com/advancedclimatesystems/gonnx/ops"
+	"github.com/sergev/gonnx/ops"
 )
 
 var asinhVersions = ops.OperatorVersions{

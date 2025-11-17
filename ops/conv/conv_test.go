@@ -3,8 +3,8 @@ package conv
 import (
 	"testing"
 
-	"github.com/advancedclimatesystems/gonnx/onnx"
-	"github.com/advancedclimatesystems/gonnx/ops"
+	"github.com/sergev/gonnx/onnx"
+	"github.com/sergev/gonnx/ops"
 	"github.com/stretchr/testify/assert"
 	"gorgonia.org/tensor"
 )

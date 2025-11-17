@@ -3,7 +3,7 @@ package ops
 import (
 	"math/rand"
 
-	"github.com/advancedclimatesystems/gonnx/onnx"
+	"github.com/sergev/gonnx/onnx"
 	"gorgonia.org/tensor"
 )
 

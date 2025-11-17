@@ -1,6 +1,6 @@
 package rnn
 
-import "github.com/advancedclimatesystems/gonnx/ops"
+import "github.com/sergev/gonnx/ops"
 
 var rnnVersions = ops.OperatorVersions{
 	7: ops.NewOperatorConstructor(newRNN, 7, rnnTypeConstraints),

@@ -1,7 +1,7 @@
 package concat
 
 import (
-	"github.com/advancedclimatesystems/gonnx/ops"
+	"github.com/sergev/gonnx/ops"
 )
 
 var concatVersions = ops.OperatorVersions{

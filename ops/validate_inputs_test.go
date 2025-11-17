@@ -3,7 +3,7 @@ package ops
 import (
 	"testing"
 
-	"github.com/advancedclimatesystems/gonnx/onnx"
+	"github.com/sergev/gonnx/onnx"
 	"github.com/stretchr/testify/assert"
 	"gorgonia.org/tensor"
 )

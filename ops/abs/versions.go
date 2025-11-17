@@ -1,7 +1,7 @@
 package abs
 
 import (
-	"github.com/advancedclimatesystems/gonnx/ops"
+	"github.com/sergev/gonnx/ops"
 )
 
 var absVersions = ops.OperatorVersions{

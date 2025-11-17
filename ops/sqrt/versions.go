@@ -1,6 +1,6 @@
 package sqrt
 
-import "github.com/advancedclimatesystems/gonnx/ops"
+import "github.com/sergev/gonnx/ops"
 
 var sqrtVersions = ops.OperatorVersions{
 	6:  ops.NewOperatorConstructor(newSqrt, 6, sqrtTypeConstraints),

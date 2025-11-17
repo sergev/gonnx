@@ -4,7 +4,7 @@ VERSION=$(shell git describe --always --tags --dirty)
 LDFLAGS=-ldflags "-s -w -X main.Version=${VERSION}"
 TEST=$(shell go list ./... | grep -v /onnx/)
 
-BUILD_PARAMS=CGO_ENABLED=0 
+BUILD_PARAMS=CGO_ENABLED=0
 
 
 define echotask
@@ -16,6 +16,9 @@ define echotask
 	@echo $2
 endef
 
+build: ## Build the onnx-yaml binary.
+	${BUILD_PARAMS} go build ${LDFLAGS} -o onnx-yaml ./onnx_yaml
+
 help:
 	$(call echotask,"help","Shows this page.")
 	$(call echotask,"lint","Runs the GOLANGCI linter.")
@@ -24,6 +27,7 @@ help:
 	$(call echotask,"install","Install project dependencies.")
 	$(call echotask,"install_lint","Install the Go linter.")
 	$(call echotask,"install_gotestsum","Install the Go test runner.")
+	$(call echotask,"build","Builds the onnx-yaml binary.")
 	$(call echotask,"build_all","Builds the project for both amd64 and arm64")
 	$(call echotask,"build_amd64","Go amd64 build of the project.")
 	$(call echotask,"build_arm64","Go arm64 build of the project.")

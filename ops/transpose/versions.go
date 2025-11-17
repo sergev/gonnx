@@ -1,6 +1,6 @@
 package transpose
 
-import "github.com/advancedclimatesystems/gonnx/ops"
+import "github.com/sergev/gonnx/ops"
 
 var transposeVersions = ops.OperatorVersions{
 	1:  ops.NewOperatorConstructor(newTranspose, 1, transposeTypeConstraint),

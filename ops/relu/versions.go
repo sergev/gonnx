@@ -1,6 +1,6 @@
 package relu
 
-import "github.com/advancedclimatesystems/gonnx/ops"
+import "github.com/sergev/gonnx/ops"
 
 var reluVersions = ops.OperatorVersions{
 	6:  ops.NewOperatorConstructor(newRelu, 6, reluTypeConstraints),

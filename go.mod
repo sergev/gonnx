@@ -1,4 +1,4 @@
-module github.com/advancedclimatesystems/gonnx
+module github.com/sergev/gonnx
 
 go 1.23
 
