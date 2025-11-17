@@ -1,5 +1,7 @@
-onnx-yaml
+onnx-dump
 *.yaml
+*.dot
+*.pdf
 test_data/
 .coverage.out
 
