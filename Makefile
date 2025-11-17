@@ -1,11 +1,10 @@
-.PHONY: build test
+.PHONY: build test clean
 
 VERSION=$(shell git describe --always --tags --dirty)
 LDFLAGS=-ldflags "-s -w -X main.Version=${VERSION}"
 TEST=$(shell go list ./... | grep -v /onnx/)
 
 BUILD_PARAMS=CGO_ENABLED=0
-
 
 define echotask
 	@tput setaf 6
@@ -31,6 +30,10 @@ help:
 	$(call echotask,"build_all","Builds the project for both amd64 and arm64")
 	$(call echotask,"build_amd64","Go amd64 build of the project.")
 	$(call echotask,"build_arm64","Go arm64 build of the project.")
+	$(call echotask,"clean","Removes build files.")
+
+clean: ## Remove build files.
+	rm -f onnx-dump .coverage.out
 
 lint: ## Run various linters.
 	@golangci-lint run --timeout=1m --config .golangci.yml
