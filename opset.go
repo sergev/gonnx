@@ -20,6 +20,7 @@ import (
 	"github.com/sergev/gonnx/ops/cos"
 	"github.com/sergev/gonnx/ops/cosh"
 	"github.com/sergev/gonnx/ops/cumsum"
+	"github.com/sergev/gonnx/ops/dequantizelinear"
 	"github.com/sergev/gonnx/ops/div"
 	"github.com/sergev/gonnx/ops/equal"
 	"github.com/sergev/gonnx/ops/erf"
@@ -37,11 +38,16 @@ import (
 	"github.com/sergev/gonnx/ops/logsoftmax"
 	"github.com/sergev/gonnx/ops/lstm"
 	"github.com/sergev/gonnx/ops/matmul"
+	"github.com/sergev/gonnx/ops/maxpool"
 	"github.com/sergev/gonnx/ops/mul"
 	"github.com/sergev/gonnx/ops/not"
 	"github.com/sergev/gonnx/ops/or"
 	"github.com/sergev/gonnx/ops/pow"
 	"github.com/sergev/gonnx/ops/prelu"
+	"github.com/sergev/gonnx/ops/qlinearadd"
+	"github.com/sergev/gonnx/ops/qlinearconv"
+	"github.com/sergev/gonnx/ops/qlinearmatmul"
+	"github.com/sergev/gonnx/ops/quantizelinear"
 	"github.com/sergev/gonnx/ops/reducemax"
 	"github.com/sergev/gonnx/ops/reducemean"
 	"github.com/sergev/gonnx/ops/reducemin"
@@ -75,68 +81,74 @@ const (
 type Opset map[string]func() ops.Operator
 
 var operators = map[string]ops.OperatorVersions{
-	"Abs":             abs.GetVersions(),
-	"Acos":            acos.GetVersions(),
-	"Acosh":           acosh.GetVersions(),
-	"Add":             add.GetVersions(),
-	"And":             and.GetVersions(),
-	"ArgMax":          argmax.GetVersions(),
-	"Asin":            asin.GetVersions(),
-	"Asinh":           asinh.GetVersions(),
-	"Atan":            atan.GetVersions(),
-	"Atanh":           atanh.GetVersions(),
-	"Cast":            cast.GetVersions(),
-	"Concat":          concat.GetVersions(),
-	"Constant":        constant.GetVersions(),
-	"ConstantOfShape": constantofshape.GetVersions(),
-	"Conv":            conv.GetVersions(),
-	"Cos":             cos.GetVersions(),
-	"Cosh":            cosh.GetVersions(),
-	"CumSum":          cumsum.GetVersions(),
-	"Div":             div.GetVersions(),
-	"Equal":           equal.GetVersions(),
-	"Erf":             erf.GetVersions(),
-	"Expand":          expand.GetVersions(),
-	"Flatten":         flatten.GetVersions(),
-	"Gather":          gather.GetVersions(),
-	"Gemm":            gemm.GetVersions(),
-	"Greater":         greater.GetVersions(),
-	"GreaterOrEqual":  greaterorequal.GetVersions(),
-	"GRU":             gru.GetVersions(),
-	"Identity":        identity.GetVersions(),
-	"Less":            less.GetVersions(),
-	"LessOrEqual":     lessorequal.GetVersions(),
-	"LinearRegressor": linearregressor.GetVersions(),
-	"LogSoftmax":      logsoftmax.GetVersions(),
-	"LSTM":            lstm.GetVersions(),
-	"MatMul":          matmul.GetVersions(),
-	"Mul":             mul.GetVersions(),
-	"Not":             not.GetVersions(),
-	"Or":              or.GetVersions(),
-	"Pow":             pow.GetVersions(),
-	"PRelu":           prelu.GetVersions(),
-	"ReduceMax":       reducemax.GetVersions(),
-	"ReduceMean":      reducemean.GetVersions(),
-	"ReduceMin":       reducemin.GetVersions(),
-	"Relu":            relu.GetVersions(),
-	"Reshape":         reshape.GetVersions(),
-	"RNN":             rnn.GetVersions(),
-	"Scaler":          scaler.GetVersions(),
-	"Shape":           shape.GetVersions(),
-	"Sigmoid":         sigmoid.GetVersions(),
-	"Sin":             sin.GetVersions(),
-	"Sinh":            sinh.GetVersions(),
-	"Slice":           slice.GetVersions(),
-	"Softmax":         softmax.GetVersions(),
-	"Sqrt":            sqrt.GetVersions(),
-	"Squeeze":         squeeze.GetVersions(),
-	"Sub":             sub.GetVersions(),
-	"Tan":             tan.GetVersions(),
-	"Tanh":            tanh.GetVersions(),
-	"Transpose":       transpose.GetVersions(),
-	"Unsqueeze":       unsqueeze.GetVersions(),
-	"Xor":             xor.GetVersions(),
-	"Where":           where.GetVersions(),
+	"Abs":              abs.GetVersions(),
+	"Acos":             acos.GetVersions(),
+	"Acosh":            acosh.GetVersions(),
+	"Add":              add.GetVersions(),
+	"And":              and.GetVersions(),
+	"ArgMax":           argmax.GetVersions(),
+	"Asin":             asin.GetVersions(),
+	"Asinh":            asinh.GetVersions(),
+	"Atan":             atan.GetVersions(),
+	"Atanh":            atanh.GetVersions(),
+	"Cast":             cast.GetVersions(),
+	"Concat":           concat.GetVersions(),
+	"Constant":         constant.GetVersions(),
+	"ConstantOfShape":  constantofshape.GetVersions(),
+	"Conv":             conv.GetVersions(),
+	"Cos":              cos.GetVersions(),
+	"Cosh":             cosh.GetVersions(),
+	"CumSum":           cumsum.GetVersions(),
+	"Div":              div.GetVersions(),
+	"Equal":            equal.GetVersions(),
+	"Erf":              erf.GetVersions(),
+	"Expand":           expand.GetVersions(),
+	"Flatten":          flatten.GetVersions(),
+	"Gather":           gather.GetVersions(),
+	"Gemm":             gemm.GetVersions(),
+	"Greater":          greater.GetVersions(),
+	"GreaterOrEqual":   greaterorequal.GetVersions(),
+	"GRU":              gru.GetVersions(),
+	"Identity":         identity.GetVersions(),
+	"Less":             less.GetVersions(),
+	"LessOrEqual":      lessorequal.GetVersions(),
+	"LinearRegressor":  linearregressor.GetVersions(),
+	"LogSoftmax":       logsoftmax.GetVersions(),
+	"LSTM":             lstm.GetVersions(),
+	"MatMul":           matmul.GetVersions(),
+	"MaxPool":          maxpool.GetVersions(),
+	"Mul":              mul.GetVersions(),
+	"Not":              not.GetVersions(),
+	"Or":               or.GetVersions(),
+	"Pow":              pow.GetVersions(),
+	"PRelu":            prelu.GetVersions(),
+	"QLinearAdd":       qlinearadd.GetVersions(),
+	"QLinearConv":      qlinearconv.GetVersions(),
+	"QLinearMatMul":    qlinearmatmul.GetVersions(),
+	"QuantizeLinear":   quantizelinear.GetVersions(),
+	"DequantizeLinear": dequantizelinear.GetVersions(),
+	"ReduceMax":        reducemax.GetVersions(),
+	"ReduceMean":       reducemean.GetVersions(),
+	"ReduceMin":        reducemin.GetVersions(),
+	"Relu":             relu.GetVersions(),
+	"Reshape":          reshape.GetVersions(),
+	"RNN":              rnn.GetVersions(),
+	"Scaler":           scaler.GetVersions(),
+	"Shape":            shape.GetVersions(),
+	"Sigmoid":          sigmoid.GetVersions(),
+	"Sin":              sin.GetVersions(),
+	"Sinh":             sinh.GetVersions(),
+	"Slice":            slice.GetVersions(),
+	"Softmax":          softmax.GetVersions(),
+	"Sqrt":             sqrt.GetVersions(),
+	"Squeeze":          squeeze.GetVersions(),
+	"Sub":              sub.GetVersions(),
+	"Tan":              tan.GetVersions(),
+	"Tanh":             tanh.GetVersions(),
+	"Transpose":        transpose.GetVersions(),
+	"Unsqueeze":        unsqueeze.GetVersions(),
+	"Xor":              xor.GetVersions(),
+	"Where":            where.GetVersions(),
 }
 
 // GetClosestOperatorVersion resolves, given a certain opset version, the operator version that is closest

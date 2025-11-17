@@ -67,10 +67,16 @@ func NewModel(mp *onnx.ModelProto) (*Model, error) {
 
 	var opsetID int64
 
+	// Only consider the main domain (empty string or "ai.onnx") when determining opset version
+	// This prevents non-standard domains (like ai.onnx.contrib with version 1000) from causing errors
 	for i := 0; i < len(opsetImports); i++ {
-		version := opsetImports[i].GetVersion()
-		if version > opsetID {
-			opsetID = version
+		domain := opsetImports[i].GetDomain()
+		// Main domain is either empty string or "ai.onnx"
+		if domain == "" || domain == "ai.onnx" {
+			version := opsetImports[i].GetVersion()
+			if version > opsetID {
+				opsetID = version
+			}
 		}
 	}
 
