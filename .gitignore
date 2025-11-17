@@ -1,3 +1,5 @@
+onnx-yaml
+*.yaml
 test_data/
 .coverage.out
 

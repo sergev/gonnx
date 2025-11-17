@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"reflect"
 
 	"github.com/sergev/gonnx"
 	"github.com/sergev/gonnx/onnx"
@@ -61,8 +62,15 @@ func main() {
 		"graph":    graphData,
 	}
 
+	// Clean output: remove empty fields and zero numeric values
+	cleaned := cleanMap(output)
+	cleanedOutput, ok := cleaned.(map[string]interface{})
+	if !ok || cleanedOutput == nil {
+		cleanedOutput = output // Fallback to original if cleaning failed
+	}
+
 	// Marshal to YAML
-	yamlData, err := yaml.Marshal(output)
+	yamlData, err := yaml.Marshal(cleanedOutput)
 	if err != nil {
 		log.Fatalf("Failed to marshal to YAML: %v", err)
 	}
@@ -132,13 +140,13 @@ func extractGraphInfo(modelProto *onnx.ModelProto, model *gonnx.Model) map[strin
 			"doc_string":  init.DocString,
 			"data_type":   convertDataTypeToString(init.GetDataType()),
 			"dims":        init.Dims,
-			"raw_data":    len(init.RawData), // Just store length, not raw bytes
-			"double_data": init.DoubleData,
-			"float_data":  init.FloatData,
-			"int32_data":  init.Int32Data,
-			"int64_data":  init.Int64Data,
-			"uint64_data": init.Uint64Data,
-			"string_data": init.StringData,
+			"raw_data":    len(init.RawData),    // Just store length, not raw bytes
+			"double_data": len(init.DoubleData), // Just store length, not actual data
+			"float_data":  len(init.FloatData),  // Just store length, not actual data
+			"int32_data":  len(init.Int32Data),  // Just store length, not actual data
+			"int64_data":  len(init.Int64Data),  // Just store length, not actual data
+			"uint64_data": len(init.Uint64Data), // Just store length, not actual data
+			"string_data": len(init.StringData), // Just store length, not actual data
 		}
 		initializers[i] = initInfo
 	}
@@ -149,7 +157,7 @@ func extractGraphInfo(modelProto *onnx.ModelProto, model *gonnx.Model) map[strin
 	inputShapeMap := make(map[string]interface{})
 	for _, name := range inputNames {
 		if shape, ok := inputShapes[name]; ok {
-			inputShapeMap[name] = shape
+			inputShapeMap[name] = convertShapeToYAML(shape)
 		}
 	}
 
@@ -157,7 +165,7 @@ func extractGraphInfo(modelProto *onnx.ModelProto, model *gonnx.Model) map[strin
 	outputShapeMap := make(map[string]interface{})
 	for _, name := range outputNames {
 		shape := model.OutputShape(name)
-		outputShapeMap[name] = shape
+		outputShapeMap[name] = convertShapeToYAML(shape)
 	}
 
 	return map[string]interface{}{
@@ -268,6 +276,26 @@ func convertShape(shape *onnx.TensorShapeProto) map[string]interface{} {
 	}
 }
 
+// convertShapeToYAML converts onnx.Shape to a YAML-serializable format
+func convertShapeToYAML(shape onnx.Shape) []map[string]interface{} {
+	result := make([]map[string]interface{}, len(shape))
+	for i, dim := range shape {
+		dimInfo := map[string]interface{}{
+			"isdynamic": dim.IsDynamic,
+			"size":      dim.Size,
+		}
+		// Use dimension name if available (for dynamic dimensions), otherwise use default name
+		if dim.Name != "" {
+			dimInfo["name"] = dim.Name
+		} else {
+			// For static dimensions, use a default name based on the dimension index
+			dimInfo["name"] = fmt.Sprintf("dim%d", i)
+		}
+		result[i] = dimInfo
+	}
+	return result
+}
+
 // convertDataTypeToString converts TensorProto_DataType int32 to string
 func convertDataTypeToString(dataType int32) string {
 	switch onnx.TensorProto_DataType(dataType) {
@@ -307,5 +335,80 @@ func convertDataTypeToString(dataType int32) string {
 		return "BFLOAT16"
 	default:
 		return fmt.Sprintf("UNKNOWN(%d)", dataType)
+	}
+}
+
+// cleanMap recursively removes empty fields and zero numeric values from maps and slices
+func cleanMap(v interface{}) interface{} {
+	if v == nil {
+		return nil
+	}
+
+	rv := reflect.ValueOf(v)
+	kind := rv.Kind()
+
+	// Handle maps
+	if kind == reflect.Map {
+		result := make(map[string]interface{})
+		for _, key := range rv.MapKeys() {
+			keyStr := key.String()
+			val := rv.MapIndex(key).Interface()
+			cleaned := cleanMap(val)
+			if shouldKeep(cleaned) {
+				result[keyStr] = cleaned
+			}
+		}
+		if len(result) == 0 {
+			return nil
+		}
+		return result
+	}
+
+	// Handle slices
+	if kind == reflect.Slice {
+		result := make([]interface{}, 0, rv.Len())
+		for i := 0; i < rv.Len(); i++ {
+			item := rv.Index(i).Interface()
+			cleaned := cleanMap(item)
+			if shouldKeep(cleaned) {
+				result = append(result, cleaned)
+			}
+		}
+		if len(result) == 0 {
+			return nil
+		}
+		return result
+	}
+
+	// For all other types, return as-is
+	return v
+}
+
+// shouldKeep determines if a value should be kept (not filtered out)
+func shouldKeep(v interface{}) bool {
+	if v == nil {
+		return false
+	}
+
+	// Use reflection to handle all types generically
+	rv := reflect.ValueOf(v)
+	kind := rv.Kind()
+
+	switch kind {
+	case reflect.String:
+		return rv.String() != ""
+	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+		return rv.Int() != 0
+	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
+		return rv.Uint() != 0
+	case reflect.Float32, reflect.Float64:
+		return rv.Float() != 0.0
+	case reflect.Slice, reflect.Array:
+		return rv.Len() > 0
+	case reflect.Map:
+		return rv.Len() > 0
+	default:
+		// For other types (bool, struct, etc.), keep them
+		return true
 	}
 }
